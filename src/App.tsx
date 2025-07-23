@@ -15,7 +15,8 @@ function App() {
 
   function createTodo() {
     client.models.Todo.create({ content: window.prompt("Todo content"),
-      isDone: window.prompt("Is it done? (true/false)") === "true"
+      isDone: window.prompt("Is it done? (true/false)") === "true",
+      TodoType: window.prompt("Todo type (weekdays/weekend/other)") as Schema["Todo"]["type"]["TodoType"],
      });
   }
 
@@ -25,7 +26,7 @@ function App() {
       <button onClick={createTodo}>+ new</button>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}-{todo.isDone ? "✅" : "❌"}</li>
+          <li key={todo.id}>{todo.content}-{todo.isDone ? "✅" : "❌"}-{todo.TodoType}</li>
         ))}
       </ul>
       <div>

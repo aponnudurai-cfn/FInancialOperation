@@ -11,6 +11,7 @@ const schema = a.schema({
     .model({
       content: a.string(),
       isDone: a.boolean(),
+      TodoType: a.enum(["weekdays", "weekend", "other"]),
     })
     .authorization((allow) => [allow.publicApiKey()]),
 });
