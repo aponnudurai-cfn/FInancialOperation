@@ -14,6 +14,20 @@ const schema = a.schema({
       TodoType: a.enum(["weekdays", "weekend", "other"]),
     })
     .authorization((allow) => [allow.publicApiKey()]),
+  Rating: a
+    .model({
+      professorId: a.id().required(),
+      Subject: a.string(),
+      Year: a.integer(),
+      Semester: a.integer(),
+      Ranking: a.integer(),
+    })
+    .secondaryIndexes((index) => [
+      index("professorId").sortKeys(["Subject", "Year","Semester","Ranking"]),
+      index("Subject").sortKeys(["Year", "Semester", "Ranking"]),
+      index("Year").sortKeys(["Semester", "Ranking"])
+     ])
+     .authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
