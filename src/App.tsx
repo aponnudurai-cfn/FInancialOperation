@@ -14,7 +14,9 @@ function App() {
   }, []);
 
   function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
+    client.models.Todo.create({ content: window.prompt("Todo content"),
+      isDone: window.prompt("Is it done? (true/false)") === "true"
+     });
   }
 
   return (
@@ -23,7 +25,7 @@ function App() {
       <button onClick={createTodo}>+ new</button>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
+          <li key={todo.id}>{todo.content}-{todo.isDone ? "✅" : "❌"}</li>
         ))}
       </ul>
       <div>
