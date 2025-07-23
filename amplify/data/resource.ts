@@ -46,7 +46,7 @@ const schema = a.schema({
     'address.city': a.string().required(),  
     'address.state': a.string().required(),
     'address.zip': a.string().required(),
-  }),
+  }).authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
