@@ -35,8 +35,9 @@ const schema = a.schema({
   }).authorization((allow) => [allow.publicApiKey()]),
   Lesson: a.model({
     id: a.id(),
+    title: a.string().required(),
     courseId: a.id().required(), // foreign key to Course
-    lessonName: a.string().required()
+    course: a.belongsTo("Course", "courseId")
   }).authorization((allow) => [allow.publicApiKey()]),
 });
 
