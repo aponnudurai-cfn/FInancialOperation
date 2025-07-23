@@ -1,4 +1,5 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import { identifyUser } from "aws-amplify/analytics";
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -38,6 +39,14 @@ const schema = a.schema({
     courseId: a.id().required(), // foreign key to Course
     course: a.belongsTo("Course", "courseId")
   }).authorization((allow) => [allow.publicApiKey()]),
+   Customer: a.model({
+    id: a.id(),
+    name: a.string().required(),
+    'address.street': a.string().required(),
+    'address.city': a.string().required(),  
+    'address.state': a.string().required(),
+    'address.zip': a.string().required(),
+  }),
 });
 
 export type Schema = ClientSchema<typeof schema>;
