@@ -23,7 +23,6 @@ const schema = a.schema({
       Ranking: a.integer(),
     })
     .secondaryIndexes((index) => [
-      index("id").sortKeys(["Subject", "Year", "Semester", "Ranking"]),
       index("Subject").sortKeys(["Year", "Semester", "Ranking"]),
       index("Year").sortKeys(["Semester", "Ranking"])
     ])
