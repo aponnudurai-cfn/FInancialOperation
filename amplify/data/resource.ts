@@ -16,18 +16,28 @@ const schema = a.schema({
     .authorization((allow) => [allow.publicApiKey()]),
   Rating: a
     .model({
-      professorId: a.id().required(),
+      id: a.id().required(),
       Subject: a.string(),
       Year: a.integer(),
       Semester: a.integer(),
       Ranking: a.integer(),
     })
     .secondaryIndexes((index) => [
-      index("professorId").sortKeys(["Subject", "Year","Semester","Ranking"]),
+      index("id").sortKeys(["Subject", "Year", "Semester", "Ranking"]),
       index("Subject").sortKeys(["Year", "Semester", "Ranking"]),
       index("Year").sortKeys(["Semester", "Ranking"])
-     ])
-     .authorization((allow) => [allow.publicApiKey()]),
+    ])
+    .authorization((allow) => [allow.publicApiKey()]),
+  Course: a.model({
+    id: a.id(),
+    courseName: a.string().required(),
+    lessons: a.hasMany('Lesson', 'courseId')
+  }).authorization((allow) => [allow.publicApiKey()]),
+  Lesson: a.model({
+    id: a.id(),
+    courseId: a.id().required(), // foreign key to Course
+    lessonName: a.string().required()
+  }).authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -48,7 +58,7 @@ Go to your frontend source code. From your client-side code, generate a
 Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY
 WORK IN THE FRONTEND CODE FILE.)
 
-Using JavaScript or Next.js React Server Components, Middleware, Server 
+Using JavaScript or Next.js React Server Components, Middleware, Server
 Actions or Pages Router? Review how to generate Data clients for those use
 cases: https://docs.amplify.aws/gen2/build-a-backend/data/connect-to-API/
 =========================================================================*/
