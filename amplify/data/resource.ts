@@ -39,6 +39,17 @@ const schema = a.schema({
     courseId: a.id().required(), // foreign key to Course
     course: a.belongsTo("Course", "courseId")
   }).authorization((allow) => [allow.publicApiKey()]),
+  CustomerAddress: a.customType({
+    street: a.string(),
+    city: a.string(),
+    state: a.string(),
+    zip: a.string(),
+  }),
+  Customer: a.model({
+    id: a.id(),
+    name: a.string(),
+    address: a.ref('CustomerAddress'),
+  }).authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
