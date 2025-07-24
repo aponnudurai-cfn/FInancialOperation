@@ -60,7 +60,7 @@ const schema = a.schema({
 
   EchoResponse:a.customType({
     content: a.string(),
-    executionDuration: a.integer()}),
+    executionDuration: a.float()}),
    echo: a
     .query()
     .arguments({
