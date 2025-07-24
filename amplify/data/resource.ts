@@ -15,7 +15,7 @@ const echo = defineFunction({
 })
 
 const signUpForNewsletter = defineFunction({
-  entry: './sign-up-for-newsletter/handler.ts'
+  entry: './signup/handler.ts'
 });
 
 const schema = a.schema({
