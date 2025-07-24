@@ -1,4 +1,7 @@
-import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import { type ClientSchema, 
+  a, 
+  defineData, 
+  defineFunction } from "@aws-amplify/backend";
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -6,6 +9,11 @@ adding a new "isDone" field as a boolean. The authorization rule below
 specifies that any user authenticated via an API key can "create", "read",
 "update", and "delete" any "Todo" records.
 =========================================================================*/
+
+const echoHandler = defineFunction({
+  entry: './echo-handler/handler.ts'
+})
+
 const schema = a.schema({
   Todo: a
     .model({
@@ -49,6 +57,18 @@ const schema = a.schema({
     name: a.string(),
     address: a.ref('CustomerAddress'),
   }).authorization((allow) => [allow.publicApiKey()]),
+
+  EchoResponse:a.customType({
+    content: a.string(),
+    executionDuration: a.integer()}),
+   echo: a
+    .query()
+    .arguments({
+      content: a.string()
+    })
+    .returns(a.ref('EchoResponse'))
+    .authorization(allow => [allow.authenticated()])
+    .handler(a.handler.function(echoHandler))
 });
 
 export type Schema = ClientSchema<typeof schema>;
