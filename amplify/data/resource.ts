@@ -25,7 +25,7 @@ const schema = a.schema({
       isDone: a.boolean(),
       TodoType: a.enum(["weekdays", "weekend", "other"]),
     })
-    .authorization((allow) => [allow.publicApiKey()]),
+    .authorization((allow) => [allow.authenticated()]),
   Rating: a
     .model({
       id: a.id().required(),
@@ -38,18 +38,18 @@ const schema = a.schema({
       index("Subject").sortKeys(["Year", "Semester", "Ranking"]),
       index("Year").sortKeys(["Semester", "Ranking"])
     ])
-    .authorization((allow) => [allow.publicApiKey()]),
+    .authorization((allow) => [allow.authenticated()]),
   Course: a.model({
     id: a.id(),
     courseName: a.string().required(),
     lessons: a.hasMany('Lesson', 'courseId')
-  }).authorization((allow) => [allow.publicApiKey()]),
+  }).authorization((allow) => [allow.authenticated()]),
   Lesson: a.model({
     id: a.id(),
     title: a.string().required(),
     courseId: a.id().required(), // foreign key to Course
     course: a.belongsTo("Course", "courseId")
-  }).authorization((allow) => [allow.publicApiKey()]),
+  }).authorization((allow) => [allow.authenticated()]),
   CustomerAddress: a.customType({
     street: a.string(),
     city: a.string(),
@@ -60,7 +60,7 @@ const schema = a.schema({
     id: a.id(),
     name: a.string(),
     address: a.ref('CustomerAddress'),
-  }).authorization((allow) => [allow.publicApiKey()]),
+  }).authorization((allow) => [allow.authenticated()]),
 
   EchoResponse:a.customType({
     content: a.string(),
@@ -72,7 +72,7 @@ const schema = a.schema({
     })
     .handler(a.handler.function(echo))
     .returns(a.ref('EchoResponse'))
-    .authorization(allow => [allow.publicApiKey()]),
+    .authorization(allow => [allow.authenticated()]),
     
 
     signUpForNewsletter: a.mutation()
@@ -80,7 +80,7 @@ const schema = a.schema({
         email: a.email()
       })
       .handler(a.handler.function(signUpForNewsletter).async())
-      .authorization((allow) => allow.publicApiKey())
+      .authorization((allow) => allow.authenticated())
 });
 
 export type Schema = ClientSchema<typeof schema>;
