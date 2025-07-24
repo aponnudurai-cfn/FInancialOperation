@@ -11,11 +11,11 @@ specifies that any user authenticated via an API key can "create", "read",
 =========================================================================*/
 
 const echo = defineFunction({
-  entry: './echo/handler.ts'
+  entry: './echo/echo.ts'
 })
 
 const signUpForNewsletter = defineFunction({
-  entry: './signup/handler.ts'
+  entry: './signup/signup.ts'
 });
 
 const schema = a.schema({
