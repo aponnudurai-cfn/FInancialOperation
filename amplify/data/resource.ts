@@ -10,9 +10,13 @@ specifies that any user authenticated via an API key can "create", "read",
 "update", and "delete" any "Todo" records.
 =========================================================================*/
 
-const echoHandler = defineFunction({
-  entry: './echo-handler/handler.ts'
+const echo = defineFunction({
+  entry: './echo/handler.ts'
 })
+
+const signUpForNewsletter = defineFunction({
+  entry: './sign-up-for-newsletter/handler.ts'
+});
 
 const schema = a.schema({
   Todo: a
@@ -66,23 +70,17 @@ const schema = a.schema({
     .arguments({
       content: a.string()
     })
+    .handler(a.handler.function(echo))
     .returns(a.ref('EchoResponse'))
-    .authorization(allow => [allow.publicApiKey()])
-    .handler(a.handler.function(echoHandler)),
-
-  Status: a.enum(["ACCEPTED", "REJECTED"]),
-
-  getPost: a
-    .query()
-    .arguments({
-      content: a.string(),
-      status: a.ref("Status"),
-    })
-    .returns(a.string())
     .authorization(allow => [allow.publicApiKey()]),
+    
 
-
-
+    signUpForNewsletter: a.mutation()
+      .arguments({
+        email: a.email()
+      })
+      .handler(a.handler.function(signUpForNewsletter).async())
+      .authorization((allow) => allow.guest())
 });
 
 export type Schema = ClientSchema<typeof schema>;
