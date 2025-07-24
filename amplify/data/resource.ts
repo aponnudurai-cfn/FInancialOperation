@@ -67,7 +67,7 @@ const schema = a.schema({
       content: a.string()
     })
     .returns(a.ref('EchoResponse'))
-    .authorization(allow => [allow.authenticated()])
+    .authorization(allow => [allow.publicApiKey()])
     .handler(a.handler.function(echoHandler))
 });
 
