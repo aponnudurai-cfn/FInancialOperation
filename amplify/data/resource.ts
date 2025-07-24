@@ -68,7 +68,21 @@ const schema = a.schema({
     })
     .returns(a.ref('EchoResponse'))
     .authorization(allow => [allow.publicApiKey()])
-    .handler(a.handler.function(echoHandler))
+    .handler(a.handler.function(echoHandler)),
+
+  Status: a.enum(["ACCEPTED", "REJECTED"]),
+
+  getPost: a
+    .query()
+    .arguments({
+      content: a.string(),
+      status: a.ref("Status"),
+    })
+    .returns(a.string())
+    .authorization(allow => [allow.publicApiKey()]),
+
+
+
 });
 
 export type Schema = ClientSchema<typeof schema>;

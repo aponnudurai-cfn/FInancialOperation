@@ -4,6 +4,10 @@ import { generateClient } from "aws-amplify/data";
 export default function Course() {
     // Assuming you have a client generated from amplify/data/resource.ts
     const client = generateClient<Schema>();
+    const echo = async () => {
+        const response = await client.queries.echo({ content: "Hello, Amplify!" });
+        console.log("Echo response:", response);
+    };
     const createCourse = async () => {
         const course = await client.models.Course.create({ courseName: "Amplify Essentials" });
         console.log("Course created:", course);
@@ -24,13 +28,12 @@ export default function Course() {
                 courseId: lesson.courseId
             });
         }
-
-
     };
     return (
         <div>
             <h2>Course</h2>
             <button onClick={createCourse}>+ Create new course</button>
+             <button onClick={echo}>+ Just echo now</button>
         </div>
     );
 }
