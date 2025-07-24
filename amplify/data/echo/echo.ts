@@ -1,5 +1,4 @@
 import type { Schema } from '../resource'
-
 export const echo: Schema["echo"]["functionHandler"] = async (event, context) => {
   const start = performance.now();
   return {
