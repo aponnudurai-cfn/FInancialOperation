@@ -1,10 +1,15 @@
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
+import { fetchAuthSession } from 'aws-amplify/auth';
 
 export default function Course() {
     // Assuming you have a client generated from amplify/data/resource.ts
     const client = generateClient<Schema>();
     const echo = async () => {
+        const session = await fetchAuthSession();
+        const token = session.tokens?.idToken?.toString() ?? null;
+        console.log("token:", token);
+
         const response = await client.queries.echo({ content: "Hello, Amplify!" });
         console.log("Echo response:", response);
     };
