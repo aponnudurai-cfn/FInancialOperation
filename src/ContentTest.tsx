@@ -5,11 +5,11 @@ import { createClient, Entry, EntrySkeletonType } from 'contentful';
 type PostFields = {
   title: string;
   slug: string;
-  PostBody: string;
+  postBody: string;
 };
 
 // ✅ Wrap in EntrySkeletonType to satisfy constraint
-type PostSkeleton = EntrySkeletonType<PostFields>;
+type PostSkeleton = EntrySkeletonType<PostFields, 'blogPost'>;
 
 const client = createClient({
   space: 'vt5x1g3hgl6j',
@@ -41,8 +41,9 @@ export default function ContentTest() {
       ) : (
         posts.map((post) => (
           <div key={post.sys.id} style={{ marginBottom: '1rem' }}>
-            <h3>{post.fields.slug}</h3>
-            <p>{post.fields.title}</p>
+            <h3>{post.fields.slug as unknown as string}</h3>
+            <p>{post.fields.title as unknown as string}</p>
+            <p>{post.fields.postBody as unknown as string}</p>
           </div>
         ))
       )}
