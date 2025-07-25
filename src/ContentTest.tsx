@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { createClient, Entry, EntrySkeletonType } from 'contentful';
+import { fetchAuthSession } from 'aws-amplify/auth';
+import { generateClient } from "aws-amplify/data";
+import type { Schema } from "../amplify/data/resource";
 
 // ✅ Define your field shape
 type PostFields = {
@@ -15,10 +18,20 @@ const client = createClient({
   space: 'vt5x1g3hgl6j',
   accessToken: 'ukyCeeBKwRsESNJjnm2wDH3TugOud1goy_tcwkgj-GE',
 });
+const clientT = generateClient<Schema>();
 
 export default function ContentTest() {
   // ✅ Use Entry<PostSkeleton>[] for state
   const [posts, setPosts] = useState<Entry<PostSkeleton>[]>([]);
+
+  const echo = async () => {
+          const session = await fetchAuthSession();
+          const token = session.tokens?.idToken?.toString() ?? null;
+          console.log("token:", token);
+  
+          const response = await clientT.queries.echo({ content: "Hello, Amplify!" });
+          console.log("Echo response:", response);
+      };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -47,6 +60,7 @@ export default function ContentTest() {
           </div>
         ))
       )}
+      <button onClick={echo}>+ Just echo now</button>
     </div>
   );
 }
