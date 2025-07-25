@@ -1,11 +1,13 @@
-import { generateClient } from 'aws-amplify/api';
-import type { Schema } from '../resource'
-export const handler: Schema["echo"]["functionHandler"] = async (event, context) => {
-  const client = generateClient<Schema>();
-   const ratings = await client.models.Rating.list();
+import { type Schema } from "../resource"; // adjust path if needed
+
+export const handler: Schema["echo"]["functionHandler"] = async (context) => {
   const start = performance.now();
+
+  // ✅ This only works if the context is properly typed
+  const { items: ratings } = await context.db.Rating.list();
+
   return {
-    content: `Echoing content: ${event.arguments.content} and found ${ratings} ratings`,
-    executionDuration: performance.now() - start
+    content: `Echoing content: ${context.arguments.content} and found ${ratings.length} ratings`,
+    executionDuration: performance.now() - start,
   };
 };
